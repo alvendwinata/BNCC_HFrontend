@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Button, PageHeader } from "antd";
 import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
-function Register({ form, history }) {
-    const { getFieldDecorator } = form;
+import { modal } from "../../../helpers/utility";
+import * as actions from "../../../store/actions/index";
+
+function Register({ form, history, auth, onRegister }) {
+    const { getFieldDecorator, getFieldValue } = form;
+
+    useEffect(() => {
+        if (auth.user) {
+            modal("success", "Register Success", "Please Click Ok", () => {
+                history.replace("/home");
+            });
+        }
+    }, [auth.user, history]);
 
     const sumbitHandler = e => {
         e.preventDefault();
+        onRegister(
+            getFieldValue("email"),
+            getFieldValue("password"),
+            getFieldValue("name"),
+            getFieldValue("phone"),
+            "ADMIN"
+        );
     };
 
     const validateConfirmPass = (rule, value, callback) => {
@@ -44,7 +63,7 @@ function Register({ form, history }) {
     return (
         <>
             <PageHeader
-                onBack={() => history.replace("/")}
+                onBack={() => history.replace("/admin")}
                 title="Register Admin"
                 style={{ padding: "20px 0" }}
             />
@@ -117,4 +136,20 @@ function Register({ form, history }) {
     );
 }
 
-export default withRouter(Form.create()(Register));
+const mapStateToProps = state => {
+    return {
+        auth: state.authReducer
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onRegister: (email, password, name, phone, role) =>
+            dispatch(actions.register(email, password, name, phone, role))
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withRouter(Form.create()(Register)));

@@ -72,7 +72,7 @@ function Login({ form, error, onLogin }) {
                     Or{" "}
                     <Link
                         to={{
-                            pathname: "/",
+                            pathname: "/admin",
                             state: {
                                 register: true
                             }

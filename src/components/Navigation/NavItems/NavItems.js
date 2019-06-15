@@ -1,9 +1,16 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Menu, Icon } from "antd";
 import { NavLink, withRouter } from "react-router-dom";
+import {connect} from 'react-redux';
+import * as actions from '../../../store/actions/index';
 
-function NavItems({ collapsed, location }) {
-    const menus = {
+function NavItems({ collapsed, location, user, onGetUser }) {
+
+    useEffect(() => {
+        onGetUser();
+    }, [onGetUser]);
+
+    let menus = {
         home: {
             to: "/home",
             type: "home",
@@ -20,6 +27,31 @@ function NavItems({ collapsed, location }) {
             name: "Logout"
         }
     };
+
+    const RoleConstant = { 
+        ADMIN : "ADMIN",
+        MEMBER : "MEMBER"
+    }
+    
+    if(user.role === RoleConstant.ADMIN) {
+        menus = {
+            home: {
+                to: "/homeAdmin",
+                type: "home",
+                name: "Home"
+            },
+            myVenue: {
+                to: "/myVenue",
+                type: "home",
+                name: "My Venue"
+            },
+            logout: {
+                to: "/logout",
+                type: "unlock",
+                name: "Logout"
+            }
+        };
+    }
 
     const activeMenuClassName = "ant-menu-item-selected";
 
@@ -44,4 +76,19 @@ function NavItems({ collapsed, location }) {
     );
 }
 
-export default withRouter(NavItems);
+const mapStateToProps = state => {
+    return {
+        user: state.authReducer.user
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onGetUser: () => dispatch(actions.getUser())
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withRouter(NavItems));

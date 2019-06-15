@@ -4,10 +4,12 @@ import { connect } from "react-redux";
 
 import LandingPage from "./containers/LandingPage/LandingPage";
 import Home from "./containers/Home/Home";
+import HomeAdmin from "./containers/HomeAdmin/HomeAdmin";
+import MyVenue from "./containers/MyVenue/MyVenue";
 import Preference from "./containers/Preference/Preference";
 import LandingPageAdmin from "./containers/LandingPageAdmin/LandingPageAdmin";
-import Welcome from './containers/Welcome/Welcome';
-import Logout from './components/Logout/Logout';
+import Welcome from "./containers/Welcome/Welcome";
+import Logout from "./components/Logout/Logout";
 
 import * as actions from "./store/actions/index";
 
@@ -15,6 +17,11 @@ function App({ user, onGetUser }) {
     useEffect(() => {
         onGetUser();
     }, [onGetUser]);
+
+    const RoleConstant = {
+        ADMIN: "ADMIN",
+        MEMBER: "MEMBER"
+    };
 
     let routes = (
         <Switch>
@@ -26,14 +33,25 @@ function App({ user, onGetUser }) {
     );
 
     if (user) {
-        routes = (
-            <Switch>
-                <Route path="/preference" exact component={Preference} />
-                <Route path="/home" exact component={Home} />
-                <Route path="/logout" exact component={Logout} />
-                <Redirect to="/home" />
-            </Switch>
-        );
+        if (user.role == RoleConstant.MEMBER) {
+            routes = (
+                <Switch>
+                    <Route path="/preference" exact component={Preference} />
+                    <Route path="/home" exact component={Home} />
+                    <Route path="/logout" exact component={Logout} />
+                    <Redirect to="/home" />
+                </Switch>
+            );
+        } else if (user.role == RoleConstant.ADMIN) {
+            routes = (
+                <Switch>
+                    <Route path="/myVenue" exact component={MyVenue} />
+                    <Route path="/homeAdmin" exact component={HomeAdmin} />
+                    <Route path="/logout" exact component={Logout} />
+                    <Redirect to="/homeAdmin" />
+                </Switch>
+            );
+        }
     }
 
     return <div>{routes}</div>;
@@ -42,8 +60,8 @@ function App({ user, onGetUser }) {
 const mapStateToProps = state => {
     return {
         user: state.authReducer.user
-    }
-}
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {

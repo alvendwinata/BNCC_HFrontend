@@ -28,13 +28,14 @@ export const authOkError = () => {
     };
 };
 
-export const register = (email, password, name, phone) => {
+export const register = (email, password, name, phone, role) => {
     return {
         type: actionTypes.REGISTER,
         email: email,
         password: password,
         name: name,
-        phone: phone
+        phone: phone,
+        role: role
     };
 };
 
