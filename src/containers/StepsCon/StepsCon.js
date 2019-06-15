@@ -5,19 +5,7 @@ import styles from "./StepsCon.module.css";
 
 const { Step } = Steps;
 
-const steps = [
-    {
-        title: "Sport"
-    },
-    {
-        title: "Time"
-    },
-    {
-        title: "Location"
-    }
-];
-
-function StepsCon({ children, current }) {
+function StepsCon({ children, current, steps }) {
     return (
         <>
             <Steps current={current}>

@@ -3,10 +3,6 @@ import { connect } from "react-redux";
 
 import LayoutPage from "../../hoc/LayoutPage/LayoutPage";
 
-import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import * as actions from "../../store/actions/index";
-import axios from "../../axios";
-
 const PAGE_NAME = "Home";
 
 function Home() {
@@ -24,4 +20,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(LayoutPage(withErrorHandler(Home, axios), PAGE_NAME));
+)(LayoutPage(Home, PAGE_NAME));

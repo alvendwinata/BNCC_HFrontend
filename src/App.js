@@ -7,10 +7,9 @@ import Home from "./containers/Home/Home";
 import Preference from "./containers/Preference/Preference";
 import LandingPageAdmin from "./containers/LandingPageAdmin/LandingPageAdmin";
 import Welcome from './containers/Welcome/Welcome';
-import { isEmpty } from "./helpers/utility";
 import * as actions from "./store/actions/index";
 
-function App({ onGetUser }) {
+function App({ user, onGetUser }) {
     useEffect(() => {
         onGetUser();
     }, [onGetUser]);
@@ -24,7 +23,7 @@ function App({ onGetUser }) {
         </Switch>
     );
 
-    if (!isEmpty(localStorage.getItem("user"))) {
+    if (user) {
         routes = (
             <Switch>
                 <Route path="/preference" exact component={Preference} />
@@ -37,6 +36,12 @@ function App({ onGetUser }) {
     return <div>{routes}</div>;
 }
 
+const mapStateToProps = state => {
+    return {
+        user: state.authReducer
+    }
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         onGetUser: () => dispatch(actions.getUser())
@@ -44,6 +49,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(App);

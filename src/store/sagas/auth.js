@@ -51,10 +51,10 @@ export function* getUserSaga(action) {
             email: localStorage.getItem("user")
         };
 
-        const res = yield axios.post("", data);
+        const res = yield axios.post("/user/get/email", data);
 
         if (res.data.success) {
-            yield put(actions.registerSuccess(res.data.user));
+            yield put(actions.loginSuccess(res.data.user));
         }
     } catch (err) {
         console.log(err);

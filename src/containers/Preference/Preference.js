@@ -4,20 +4,28 @@ import { connect } from "react-redux";
 import LayoutPage from "../../hoc/LayoutPage/LayoutPage";
 import StepsCon from "../StepsCon/StepsCon";
 
-import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import * as actions from "../../store/actions/index";
-import axios from "../../axios";
-
 const PAGE_NAME = "Preference";
+
+const steps = [
+    {
+        title: "Sport"
+    },
+    {
+        title: "Time"
+    },
+    {
+        title: "Location"
+    }
+];
 
 function Preference() {
     const [current, setCurrent] = useState(0);
 
     return (
-        <StepsCon current={current}>
+        <StepsCon current={current} steps={steps}>
             <h1>asd</h1>
         </StepsCon>
-    )
+    );
 }
 
 const mapStateToProps = state => {
@@ -31,4 +39,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(LayoutPage(withErrorHandler(Preference, axios), PAGE_NAME));
+)(LayoutPage(Preference, PAGE_NAME));
