@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Select, Button, Input, Collapse } from "antd";
+import { Select, Button, List, Collapse, TimePicker, Input } from "antd";
 import { connect } from "react-redux";
 import styles from './SchedulePrices.module.css';
 import axios from "../../../axios";
 import * as actions from "../../../store/actions/index";
+import moment from "moment";
 
 const Panel = Collapse.Panel;
-
+const {Option} = Select;
+const format = 'HH:mm';
 const area = [
     {
         "areaID" : 1,
@@ -39,11 +41,28 @@ const area = [
 
 function SchedulePrices({ user }) {
     
+    const [day, setDay] = useState("");
     const [areaData, setAreaData] = useState(area);
+    const [startTime, setStartTime] = useState("09:00");
+    const [endTime, setEndTime] = useState("12:00");
+
     const keyJoin = []
     areaData.map(data => {
-        keyJoin.push(toString(data.areaID))
+        keyJoin.push(data.areaID.toString())
     })
+
+    const changeDayHandler = value => {
+        setDay(value);
+    };
+
+    const changeStartTimeHandler = (mom, value) => {
+        setStartTime(value);
+    };
+
+    const changeEndTimeHandler = (mom, value) => {
+        setEndTime(value);
+    };
+
     return (
         <>            
             <Collapse defaultActiveKey={keyJoin}>
@@ -51,6 +70,45 @@ function SchedulePrices({ user }) {
                 areaData.map(data => (
                     <Panel key={data.areaID} header={data.areaName}>
                         <p>{data.areaDesc}</p>
+                        <List
+                            bordered
+                            dataSource={data.units}
+                            renderItem={item => (
+                                <List.Item>
+                                    {item.unitName}
+                                    <div className={styles.form_row}>
+                                        <Select
+                                            defaultValue={day}
+                                            onChange={changeDayHandler}
+                                        >
+                                            <Option value="">Select Day</Option>
+                                            <Option value="1">Monday</Option>
+                                            <Option value="2">Tuesday</Option>
+                                            <Option value="3">Wednesday</Option>
+                                            <Option value="4">Thursday</Option>
+                                            <Option value="5">Friday</Option>
+                                            <Option value="6">Saturday</Option>
+                                            <Option value="7">Sunday</Option>
+                                        </Select>
+                                        &nbsp;
+                                        <TimePicker
+                                            format="HH:mm"
+                                            onChange={changeStartTimeHandler}
+                                            value={moment(startTime, "HH:mm")}
+                                        /> &nbsp; - &nbsp;
+                                        <TimePicker
+                                            format="HH:mm"
+                                            onChange={changeEndTimeHandler}
+                                            value={moment(endTime, "HH:mm")}
+                                        />
+                                        &nbsp;
+                                        <Input className={styles.form_input} placeholder={"Price"} />
+                                        &nbsp;
+                                        <Button ghost type="primary">Add Shift</Button>
+                                    </div>
+                                </List.Item>
+                            )}
+                        />
                     </Panel>
                 ))}
             </Collapse>
