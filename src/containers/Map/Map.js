@@ -8,6 +8,7 @@ import {
 } from "react-google-maps";
 import Autocomplete from "react-google-autocomplete";
 import Geocode from "react-geocode";
+import styles from "./Map.module.css";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
 
@@ -228,12 +229,12 @@ class Map extends React.Component {
             map = (
                 <div>
                     <div>
-                        <div className="form-group">
-                            <label htmlFor="">Address</label>
+                        <div className={styles.form_item}>
+                            <div className={styles.form_label}>Address</div>
                             <input
                                 type="text"
                                 name="address"
-                                className="form-control"
+                                className={styles.form_input}
                                 onChange={this.onChange}
                                 readOnly="readOnly"
                                 value={this.state.address}

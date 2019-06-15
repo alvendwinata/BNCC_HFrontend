@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "antd";
+import { Button, Table } from "antd";
 import { connect } from "react-redux";
 
 import * as actions from "../../../../store/actions/index";
@@ -25,37 +25,38 @@ function TimeTable({ data, onSubmit }) {
         }
     };
 
+    const columns = [
+        {
+          title: 'Day',
+          dataIndex: 'dayID',
+          key: 'dayID',
+        },
+        {
+          title: 'Start Time',
+          dataIndex: 'start',
+          key: 'start',
+        },
+        {
+          title: 'End Time',
+          dataIndex: 'end',
+          key: 'end',
+        },
+      ];
+
     if (data != null && data.length > 0) {
-        table = (
-            <>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Day</th>
-                            <th>Start Time</th>
-                            <th>End Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.map(item => {
-                            return (
-                                <tr key={item.id}>
-                                    <td>{returnDayName(item.dayId)}</td>
-                                    <td>{item.start}</td>
-                                    <td>{item.end}</td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-                <Button type="primary" onClick={onSubmit}>
-                    Next
-                </Button>
-            </>
-        );
+        data.map((item, index) => {
+            data[index].dayID = returnDayName(item.dayId)
+        })
     }
 
-    return table;
+    return(
+        <>
+            <Table dataSource={data} columns={columns} />
+            <Button type="primary" onClick={onSubmit}>
+                Next
+            </Button>
+        </>
+    );
 }
 
 const mapDispatchToProps = dispatch => {

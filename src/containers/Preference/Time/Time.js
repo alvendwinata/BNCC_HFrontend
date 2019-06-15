@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Select, TimePicker, Button } from "antd";
 import { connect } from "react-redux";
-
+import styles from "./Time.module.css";
 import TimeTable from "./TimeTable/TimeTable";
 import moment from "moment";
 
@@ -62,43 +62,47 @@ function Time({ user }) {
     };
 
     return (
-        <div>
-            <h1>Select your prefered time to do sports in a week !</h1>
-            <Select
-                defaultValue={day}
-                style={{ width: "50%", display: "block", margin: "30px auto" }}
-                onChange={changeDayHandler}
-            >
-                <Option value="">Select Day</Option>
-                <Option value="1">Monday</Option>
-                <Option value="2">Tuesday</Option>
-                <Option value="3">Wednesday</Option>
-                <Option value="4">Thursday</Option>
-                <Option value="5">Friday</Option>
-                <Option value="6">Saturday</Option>
-                <Option value="7">Sunday</Option>
-            </Select>
-            <TimePicker
-                format="HH:mm"
-                style={{ width: "50%", display: "block", margin: "30px auto" }}
-                onChange={changeStartTimeHandler}
-                value={moment(startTime, "HH:mm")}
-            />
-            <TimePicker
-                format="HH:mm"
-                style={{ width: "50%", display: "block", margin: "30px auto" }}
-                onChange={changeEndTimeHandler}
-                value={moment(endTime, "HH:mm")}
-            />
-            <Button
-                type="primary"
-                style={{ display: "block", margin: "30px auto" }}
-                onClick={submitHandler}
-            >
-                Submit
-            </Button>
-            <TimeTable data={data} />
-        </div>
+        <>
+            <div className={styles.form_item}>
+                <div className={styles.form_label}>Select your prefered time to do sports in a week !</div>    
+                <div className={styles.form_row}>
+                    <Select
+                        defaultValue={day}
+                        onChange={changeDayHandler}
+                    >
+                        <Option value="">Select Day</Option>
+                        <Option value="1">Monday</Option>
+                        <Option value="2">Tuesday</Option>
+                        <Option value="3">Wednesday</Option>
+                        <Option value="4">Thursday</Option>
+                        <Option value="5">Friday</Option>
+                        <Option value="6">Saturday</Option>
+                        <Option value="7">Sunday</Option>
+                    </Select>
+                    &nbsp;
+                    <TimePicker
+                        format="HH:mm"
+                        onChange={changeStartTimeHandler}
+                        value={moment(startTime, "HH:mm")}
+                    /> &nbsp; - &nbsp;
+                    <TimePicker
+                        format="HH:mm"
+                        onChange={changeEndTimeHandler}
+                        value={moment(endTime, "HH:mm")}
+                    />
+                    &nbsp;
+                    <Button
+                        type="primary"
+                        onClick={submitHandler}
+                    >
+                        Submit
+                    </Button>
+                </div>
+            </div>
+            <div className={styles.form_item}>
+                <TimeTable data={data} />
+            </div>
+        </>
     );
 }
 

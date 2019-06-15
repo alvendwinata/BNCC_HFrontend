@@ -5,6 +5,7 @@ import LayoutPage from "../../hoc/LayoutPage/LayoutPage";
 import StepsCon from "../StepsCon/StepsCon";
 import VenueInformation from "./VenueInformation/VenueInformation";
 import AreaVenue from "./AreaVenue/AreaVenue";
+import SchedulePrices from "./SchedulePrices/SchedulePrices";
 
 const PAGE_NAME = "MyVenue";
 
@@ -26,7 +27,7 @@ function MyVenue() {
     return (
         <StepsCon current={current} steps={steps}>
             {/* {current === 0 ? <VenueInformation /> : current === 1 ? <AreaVenue /> : null} */}
-            <AreaVenue />
+            <SchedulePrices />
         </StepsCon>
     );
 }

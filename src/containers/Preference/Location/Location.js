@@ -2,9 +2,8 @@ import React from "react";
 import Map from "../../Map/Map";
 import { Button } from "antd";
 import { connect } from "react-redux";
-
+import styles from "./Location.module.css";
 import { withRouter } from "react-router-dom";
-
 import axios from "../../../axios";
 import * as actions from "../../../store/actions/index";
 
@@ -30,18 +29,21 @@ function Location({ google, loca, user, history, onSubmit }) {
 
     return (
         <>
-            <h1>Your Prefered Location</h1>
-            <Map
-                google={google}
-                center={{ lat: -6.2572006, lng: 106.7913482 }}
-                height="300px"
-                zoom={15}
-            />
-            <br />
-            <br />
-            <Button type="primary" onClick={submitHandler}>
-                Submit
-            </Button>
+            <div className={styles.form_item}>
+                <div className={styles.form_label}>Your Prefered Location</div>
+                <Map
+                    google={google}
+                    center={{ lat: -6.2572006, lng: 106.7913482 }}
+                    height="300px"
+                    zoom={15}
+                />
+                 
+            </div>
+            <div className={styles.form_far_button}>
+                <Button type="primary" onClick={submitHandler}>
+                    Submit
+                </Button>
+            </div>
         </>
     );
 }
