@@ -21,19 +21,18 @@ const steps = [
     }
 ];
 
-function MyVenue() {
-    const [current, setCurrent] = useState(0);
-
+function MyVenue({ current }) {
     return (
         <StepsCon current={current} steps={steps}>
-            {/* {current === 0 ? <VenueInformation /> : current === 1 ? <AreaVenue /> : null} */}
-            <SchedulePrices />
+            {current === 0 ? <VenueInformation /> : current === 1 ? <AreaVenue /> : <SchedulePrices />}
         </StepsCon>
     );
 }
 
 const mapStateToProps = state => {
-    return {};
+    return {
+        current: state.preferenceReducer.current
+    };
 };
 
 const mapDispatchToProps = dispatch => {

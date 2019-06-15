@@ -17,7 +17,7 @@ const props = {
     },
 }
 
-function AreaVenue({ user }) {
+function AreaVenue({ user, onSubmit }) {
     const [unitName, setUnitName] = useState("");
     const [unitPic, setUnitPic] = useState(null);
     const [unitData, setUnitData] = useState([]);
@@ -25,6 +25,10 @@ function AreaVenue({ user }) {
     const resetUnitForm = () => { 
         setUnitName("")
         setUnitPic(null)
+    }
+
+    const submitHandler = () => {
+        onSubmit();
     }
 
     const addUnitHandler = () => { 
@@ -90,7 +94,7 @@ function AreaVenue({ user }) {
             </div>
 
             <div className={styles.form_item}>
-                <Button type="primary">Add Area</Button>
+                <Button type="primary" onClick={submitHandler}>Add Area</Button>
             </div>
         </>
     );
@@ -104,6 +108,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        onSubmit: () => dispatch(actions.updateCurrPref())
     }
 }
 

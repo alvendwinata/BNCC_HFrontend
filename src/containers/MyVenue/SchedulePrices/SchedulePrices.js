@@ -5,6 +5,7 @@ import styles from './SchedulePrices.module.css';
 import axios from "../../../axios";
 import * as actions from "../../../store/actions/index";
 import moment from "moment";
+import { withRouter } from "react-router-dom";
 
 const Panel = Collapse.Panel;
 const {Option} = Select;
@@ -39,7 +40,7 @@ const area = [
     }
 ]
 
-function SchedulePrices({ user }) {
+function SchedulePrices({ user, history, onSubmit }) {
     
     const [day, setDay] = useState("");
     const [areaData, setAreaData] = useState(area);
@@ -62,6 +63,11 @@ function SchedulePrices({ user }) {
     const changeEndTimeHandler = (mom, value) => {
         setEndTime(value);
     };
+
+    const submitHandler = () => {
+        onSubmit();
+        history.replace('/homeAdmin');
+    }
 
     return (
         <>            
@@ -114,7 +120,7 @@ function SchedulePrices({ user }) {
             </Collapse>
 
             <div className={styles.form_item}>
-                <Button type="primary">Add Area</Button>
+                <Button type="primary" onClick={submitHandler}>Add Area</Button>
             </div>
         </>
     );
@@ -128,7 +134,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        onSubmit: () => dispatch(actions.updateCurrPref())
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SchedulePrices);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SchedulePrices));

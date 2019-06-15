@@ -1,65 +1,108 @@
 import React, { useState, useEffect } from "react";
-import { Select, Spin, Button, Input, TimePicker } from "antd";
+import { Select, Spin, Button, Input, TimePicker, Upload, Icon } from "antd";
 import { connect } from "react-redux";
-import styles from './VenueInformation.module.css';
+import styles from "./VenueInformation.module.css";
 import axios from "../../../axios";
 import * as actions from "../../../store/actions/index";
-import moment from 'moment';
+import moment from "moment";
+import Map from "../../Map/Map";
 
-const format = 'HH:mm';
+const format = "HH:mm";
 const { TextArea } = Input;
 const { Option } = Select;
 
-function VenueInformation({ user, onSubmit }) {
+const props = {
+    name: "file",
+    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    headers: {
+        authorization: "authorization-text"
+    }
+};
+
+function VenueInformation({ user, loc, onSubmit, google }) {
     const [data, setData] = useState([]);
     const [fetching, setFetching] = useState(false);
     const [value, setValue] = useState([]);
     const [facilityValue, setFacilityValue] = useState([]);
     const [facilities, setFacility] = useState([]);
+    const [vName, setVName] = useState("");
+    const [vDes, setVDes] = useState("");
+    const [vPic, setVPic] = useState(null);
 
     const fetchSports = value => {
         setFetching(true);
         const data = {
             name: value
-        }
+        };
 
-        axios.post('/sport/search', data).then(res => {
+        axios.post("/sport/search", data).then(res => {
             setData(res.data.sports);
             setFetching(false);
         });
     };
 
-    const fetchFacility = value => { 
+    const fetchFacility = value => {
         setFetching(true);
         const data = {
             name: value
-        }
+        };
 
-        axios.post('/facility/search', data).then(res => {
+        axios.post("/facility/search", data).then(res => {
             setFacility(res.data.facilities);
             setFetching(false);
         });
-    }
+    };
 
     useEffect(() => {
-        fetchSports('');
-        fetchFacility('');
+        fetchSports("");
+        fetchFacility("");
     }, []);
 
-    const submitHandler = async () => {
-        await value.forEach(async (item) => {
-            const data = {
-                userSportMapping: {
-                    userId: user.id,
-                    sportId: +item.key
-                }
+    const submitHandler = () => {
+        const venue = {
+            venue: {
+                userId: user.id,
+                name: vName,
+                address: loc.address,
+                city: loc.city,
+                description: vDes,
+                latitude: loc.lat,
+                longtitude: loc.long,
+                photos: null
             }
+        };
 
-            await axios.post('/user/sport/mapping/upsert', data);
+        axios.post("/venue/upsert", venue).then(async res => {
+            if (res.data.success) {
+                let sport = {};
+                let facility = {};
+
+                await value.forEach(async (item) => {
+                    sport = {
+                        venueSportMapping: {
+                            venueId: res.data.venue.id,
+                            sportId: +item.key
+                        }
+                    };
+
+                    await axios.post("/venue/sport/mapping/upsert", sport);
+                });
+
+                await facilityValue.forEach(async (item) => {
+                    facility = {
+                        facilityVenueMapping: {
+                            venueId: res.data.venue.id,
+                            facilityId: +item.key
+                        }
+                    };
+
+                    await axios.post("/facility/venue/mapping/upsert", facility);
+                });
+
+                onSubmit();
+            }
         });
-
-        onSubmit();
-    }
+    };
 
     const changeHandler = value => {
         setValue(value);
@@ -71,24 +114,53 @@ function VenueInformation({ user, onSubmit }) {
         setFacilityValue(value);
         setFacility([]);
         setFetching(false);
-    }
+    };
+
+    const setVenuePic = value => {
+        setVPic(value.file.name);
+    };
 
     return (
         <>
             <div className={styles.form_item}>
                 <div className={styles.form_label}>Venue Name</div>
-                <Input className={styles.form_input} />
+                <Input
+                    className={styles.form_input}
+                    value={vName}
+                    onChange={e => setVName(e.target.value)}
+                />
             </div>
             <div className={styles.form_item}>
-                <div className={styles.form_label}>Venue Address</div>
-                <Input className={styles.form_input} />
+                <Map
+                    google={google}
+                    center={{ lat: -6.2572006, lng: 106.7913482 }}
+                    height="300px"
+                    zoom={15}
+                />
             </div>
+            <br />
+            <br />
             <div className={styles.form_item}>
                 <div className={styles.form_label}>Venue Description</div>
-                <TextArea rows={4} className={styles.form_input}/>
+                <TextArea
+                    rows={4}
+                    className={styles.form_input}
+                    value={vDes}
+                    onChange={e => setVDes(e.target.value)}
+                />
             </div>
             <div className={styles.form_item}>
-                <div className={styles.form_label}>Which Sport does the venue accomodate ?</div>
+                <div className={styles.form_label}>Venue Picture</div>
+                <Upload {...props} onChange={setVenuePic}>
+                    <Button>
+                        <Icon type="upload" /> Click to Upload
+                    </Button>
+                </Upload>
+            </div>
+            <div className={styles.form_item}>
+                <div className={styles.form_label}>
+                    Which Sport does the venue accomodate ?
+                </div>
                 <Select
                     mode="multiple"
                     labelInValue
@@ -106,7 +178,9 @@ function VenueInformation({ user, onSubmit }) {
                 </Select>
             </div>
             <div className={styles.form_item}>
-                <div className={styles.form_label}>What Facility does your venue offer ?</div>
+                <div className={styles.form_label}>
+                    What Facility does your venue offer ?
+                </div>
                 <Select
                     mode="multiple"
                     labelInValue
@@ -122,54 +196,128 @@ function VenueInformation({ user, onSubmit }) {
                         <Option key={d.id}>{d.name}</Option>
                     ))}
                 </Select>
-            </div>    
+            </div>
             <div className={styles.form_item}>
-                <div className={styles.form_label}>Set your venue opening hours</div>
+                <div className={styles.form_label}>
+                    Set your venue opening hours
+                </div>
                 <div className={styles.form_row}>
                     <span className={styles.form_row_label}>Monday</span>
-                    <TimePicker defaultValue={moment('09:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("09:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                     &nbsp; - &nbsp;
-                    <TimePicker defaultValue={moment('20:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("20:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                 </div>
                 <div className={styles.form_row}>
                     <span className={styles.form_row_label}>Tuesday</span>
-                    <TimePicker defaultValue={moment('09:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("09:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                     &nbsp; - &nbsp;
-                    <TimePicker defaultValue={moment('20:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("20:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                 </div>
                 <div className={styles.form_row}>
                     <span className={styles.form_row_label}>Wednesday</span>
-                    <TimePicker defaultValue={moment('09:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("09:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                     &nbsp; - &nbsp;
-                    <TimePicker defaultValue={moment('20:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("20:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                 </div>
                 <div className={styles.form_row}>
                     <span className={styles.form_row_label}>Thursday</span>
-                    <TimePicker defaultValue={moment('09:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("09:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                     &nbsp; - &nbsp;
-                    <TimePicker defaultValue={moment('20:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("20:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                 </div>
                 <div className={styles.form_row}>
                     <span className={styles.form_row_label}>Friday</span>
-                    <TimePicker defaultValue={moment('09:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("09:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                     &nbsp; - &nbsp;
-                    <TimePicker defaultValue={moment('20:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("20:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                 </div>
                 <div className={styles.form_row}>
                     <span className={styles.form_row_label}>Saturday</span>
-                    <TimePicker defaultValue={moment('09:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("09:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                     &nbsp; - &nbsp;
-                    <TimePicker defaultValue={moment('20:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("20:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                 </div>
                 <div className={styles.form_row}>
                     <span className={styles.form_row_label}>Sunday</span>
-                    <TimePicker defaultValue={moment('09:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("09:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                     &nbsp; - &nbsp;
-                    <TimePicker defaultValue={moment('20:00', format)} format={format} placeholder={""} className={styles.form_row_input} />
+                    <TimePicker
+                        defaultValue={moment("20:00", format)}
+                        format={format}
+                        placeholder={""}
+                        className={styles.form_row_input}
+                    />
                 </div>
             </div>
             <div className={styles.form_item}>
-                <Button type="primary" onClick={submitHandler}>Submit</Button>
+                <Button type="primary" onClick={submitHandler}>
+                    Submit
+                </Button>
             </div>
         </>
     );
@@ -177,14 +325,18 @@ function VenueInformation({ user, onSubmit }) {
 
 const mapStateToProps = state => {
     return {
-        user: state.authReducer.user
-    }
-}
+        user: state.authReducer.user,
+        loc: state.preferenceReducer.location
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {
         onSubmit: () => dispatch(actions.updateCurrPref())
-    }
-}
+    };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(VenueInformation);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(VenueInformation);
