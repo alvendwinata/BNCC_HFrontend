@@ -38,7 +38,7 @@ function App({ user, onGetUser }) {
 
 const mapStateToProps = state => {
     return {
-        user: state.authReducer
+        user: state.authReducer.user
     }
 }
 

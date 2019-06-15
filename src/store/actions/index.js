@@ -7,3 +7,7 @@ export {
     registerSuccess,
     getUser
 } from "./auth";
+
+export {
+    updateCurrPref
+} from "./preference";

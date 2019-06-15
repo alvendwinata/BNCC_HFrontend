@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 import LayoutPage from "../../hoc/LayoutPage/LayoutPage";
 import StepsCon from "../StepsCon/StepsCon";
+import Sport from "./Sport/Sport";
+import Time from "./Time/Time";
 
 const PAGE_NAME = "Preference";
 
@@ -18,25 +20,20 @@ const steps = [
     }
 ];
 
-function Preference() {
-    const [current, setCurrent] = useState(0);
-
+function Preference({ current }) {
     return (
         <StepsCon current={current} steps={steps}>
-            <h1>asd</h1>
+            {current === 0 ? <Sport /> : current === 1 ? <Time /> : null}
         </StepsCon>
     );
 }
 
 const mapStateToProps = state => {
-    return {};
-};
-
-const mapDispatchToProps = dispatch => {
-    return {};
+    return {
+        current: state.preferenceReducer.current
+    };
 };
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(LayoutPage(Preference, PAGE_NAME));
