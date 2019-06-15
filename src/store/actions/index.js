@@ -4,5 +4,6 @@ export {
     loginFail,
     authOkError,
     register,
-    registerSuccess
+    registerSuccess,
+    getUser
 } from "./auth";

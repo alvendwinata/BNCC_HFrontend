@@ -19,7 +19,7 @@ function Login({ form, auth, history, onLogin, onOkError }) {
                 onOkError();
             });
         }
-    }, [auth, history, onOkError]);
+    }, [auth.user, auth.error, history, onOkError]);
 
     const sumbitHandler = e => {
         e.preventDefault();

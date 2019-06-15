@@ -44,3 +44,9 @@ export const registerSuccess = (user) => {
         user: user
     };
 };
+
+export const getUser = () => {
+    return {
+        type: actionTypes.GET_USER
+    }
+}

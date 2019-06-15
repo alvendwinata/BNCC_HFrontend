@@ -15,7 +15,7 @@ function LayoutPage(WrappedComponenta, pageName) {
                     <Header style={{ padding: 0 }}>
                         <HeaderPage name={pageName} />
                     </Header>
-                    <Content>
+                    <Content style={{ padding: 50 }}>
                         <WrappedComponenta {...props} />
                     </Content>
                     <Footer style={{ textAlign: "center" }}>

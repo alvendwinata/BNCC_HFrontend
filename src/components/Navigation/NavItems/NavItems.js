@@ -9,6 +9,11 @@ function NavItems({ collapsed, location }) {
             type: "home",
             name: "Home"
         },
+        preference: {
+            to: "/preference",
+            type: "home",
+            name: "Preference"
+        },
         logout: {
             to: "/logout",
             type: "unlock",

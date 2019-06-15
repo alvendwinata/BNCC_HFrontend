@@ -15,7 +15,7 @@ function Register({ form, history, auth, onRegister }) {
                 history.replace("/home");
             });
         }
-    });
+    }, [auth.user, history]);
 
     const sumbitHandler = e => {
         e.preventDefault();
