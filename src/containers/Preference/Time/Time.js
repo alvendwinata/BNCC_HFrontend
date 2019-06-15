@@ -1,31 +1,71 @@
 import React, { useState, useEffect } from "react";
 import { Select, TimePicker, Button } from "antd";
+import { connect } from "react-redux";
+
+import TimeTable from "./TimeTable/TimeTable";
+import moment from "moment";
 
 import axios from "../../../axios";
 
 const { Option } = Select;
 
-function Time() {
+function Time({ user }) {
     const [day, setDay] = useState("");
-    const [time, setTime] = useState("");
+    const [startTime, setStartTime] = useState("09:00");
+    const [endTime, setEndTime] = useState("12:00");
+    const [data, setData] = useState([]);
+    const [submit, setSubmit] = useState(false);
+
+    useEffect(() => {
+        if (submit) {
+            const data = {
+                userId: user.id
+            };
+
+            axios.post("/user/day/mapping/get/userid", data).then(res => {
+                if (res.data.success) {
+                    setData(res.data.userDayMappings);
+                    setSubmit(false);
+                }
+            });
+        }
+    }, [submit, user.id]);
 
     const changeDayHandler = value => {
         setDay(value);
     };
 
-    const changeTimeHandler = value => {
-        setTime(value);
+    const changeStartTimeHandler = (mom, value) => {
+        setStartTime(value);
+    };
+
+    const changeEndTimeHandler = (mom, value) => {
+        setEndTime(value);
     };
 
     const submitHandler = () => {
-        console.log('a');
-    }
+        const data = {
+            userDayMapping: {
+                userId: user.id,
+                dayId: day,
+                start: startTime,
+                end: endTime
+            }
+        };
+
+        axios.post("/user/day/mapping/upsert", data).then(res => {
+            setSubmit(true);
+            setDay("");
+            setStartTime("09:00");
+            setEndTime("12:00");
+        });
+    };
 
     return (
         <div>
             <h1>Select your prefered time to do sports in a week !</h1>
             <Select
-                defaultValue=""
+                defaultValue={day}
                 style={{ width: "50%", display: "block", margin: "30px auto" }}
                 onChange={changeDayHandler}
             >
@@ -41,7 +81,14 @@ function Time() {
             <TimePicker
                 format="HH:mm"
                 style={{ width: "50%", display: "block", margin: "30px auto" }}
-                onChange={changeTimeHandler}
+                onChange={changeStartTimeHandler}
+                value={moment(startTime, "HH:mm")}
+            />
+            <TimePicker
+                format="HH:mm"
+                style={{ width: "50%", display: "block", margin: "30px auto" }}
+                onChange={changeEndTimeHandler}
+                value={moment(endTime, "HH:mm")}
             />
             <Button
                 type="primary"
@@ -50,8 +97,15 @@ function Time() {
             >
                 Submit
             </Button>
+            <TimeTable data={data} />
         </div>
     );
 }
 
-export default Time;
+const mapStateToProps = state => {
+    return {
+        user: state.authReducer.user
+    };
+};
+
+export default connect(mapStateToProps)(Time);

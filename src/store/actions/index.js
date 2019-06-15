@@ -5,9 +5,12 @@ export {
     authOkError,
     register,
     registerSuccess,
-    getUser
+    getUser,
+    logout,
+    logoutSuccess
 } from "./auth";
 
 export {
-    updateCurrPref
+    updateCurrPref,
+    updatePrefLocation
 } from "./preference";

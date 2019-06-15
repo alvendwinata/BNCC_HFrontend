@@ -5,6 +5,7 @@ import LayoutPage from "../../hoc/LayoutPage/LayoutPage";
 import StepsCon from "../StepsCon/StepsCon";
 import Sport from "./Sport/Sport";
 import Time from "./Time/Time";
+import Location from "./Location/Location";
 
 const PAGE_NAME = "Preference";
 
@@ -23,7 +24,7 @@ const steps = [
 function Preference({ current }) {
     return (
         <StepsCon current={current} steps={steps}>
-            {current === 0 ? <Sport /> : current === 1 ? <Time /> : null}
+            {current === 0 ? <Sport /> : current === 1 ? <Time /> : <Location />}
         </StepsCon>
     );
 }

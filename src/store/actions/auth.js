@@ -50,3 +50,15 @@ export const getUser = () => {
         type: actionTypes.GET_USER
     }
 }
+
+export const logout = () => {
+    return {
+        type: actionTypes.LOGOUT
+    }
+}
+
+export const logoutSuccess = () => {
+    return {
+        type: actionTypes.LOGOUT_SUCCESS
+    }
+}

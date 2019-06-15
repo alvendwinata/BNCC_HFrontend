@@ -60,3 +60,8 @@ export function* getUserSaga(action) {
         console.log(err);
     }
 }
+
+export function* logoutSaga(action) {
+    yield localStorage.removeItem('user');
+    yield put(actions.logoutSuccess());
+}

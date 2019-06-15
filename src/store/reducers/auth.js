@@ -30,6 +30,12 @@ const reducer = (state = initialState, action) => {
                 user: action.user,
                 error: null
             };
+        case actionTypes.LOGOUT_SUCCESS:
+            return {
+                ...state,
+                user: null,
+                error: null
+            }
         default:
             return state;
     }

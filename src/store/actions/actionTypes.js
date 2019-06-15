@@ -6,4 +6,8 @@ export const REGISTER = "REGISTER";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const GET_USER = "GET_USER";
 
-export const UPDATE_CURR_PREF = 'UPDATE_CURR_PREF';
+export const UPDATE_CURR_PREF = "UPDATE_CURR_PREF";
+export const UPDATE_PREF_LOCATION = "UPDATE_PREF_LOCATION";
+
+export const LOGOUT = "LOGOUT";
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
