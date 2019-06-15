@@ -30,7 +30,7 @@ export function* registerSaga(action) {
                 password: action.password,
                 name: action.name,
                 phone: action.phone,
-                role: "MEMBER"
+                role: action.role
             }
         };
 

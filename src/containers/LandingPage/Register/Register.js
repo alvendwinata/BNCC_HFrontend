@@ -23,7 +23,8 @@ function Register({ form, history, auth, onRegister }) {
             getFieldValue("email"),
             getFieldValue("password"),
             getFieldValue("name"),
-            getFieldValue("phone")
+            getFieldValue("phone"),
+            "MEMBER"
         );
     };
 
@@ -143,8 +144,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onRegister: (email, password, name, phone) =>
-            dispatch(actions.register(email, password, name, phone))
+        onRegister: (email, password, name, phone, role) =>
+            dispatch(actions.register(email, password, name, phone, role))
     };
 };
 

@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 
 import LandingPage from "./containers/LandingPage/LandingPage";
 import Home from "./containers/Home/Home";
+import HomeAdmin from "./containers/HomeAdmin/HomeAdmin";
+import MyVenue from "./containers/MyVenue/MyVenue";
 import Preference from "./containers/Preference/Preference";
 import LandingPageAdmin from "./containers/LandingPageAdmin/LandingPageAdmin";
 import Welcome from './containers/Welcome/Welcome';
@@ -14,6 +16,11 @@ function App({ user, onGetUser }) {
         onGetUser();
     }, [onGetUser]);
 
+    const RoleConstant = { 
+        ADMIN : "ADMIN",
+        MEMBER : "MEMBER"
+    }
+
     let routes = (
         <Switch>
             <Route path="/user" exact component={LandingPage} />
@@ -22,15 +29,24 @@ function App({ user, onGetUser }) {
             <Redirect to="/" />
         </Switch>
     );
-
-    if (user) {
-        routes = (
-            <Switch>
-                <Route path="/preference" exact component={Preference} />
-                <Route path="/home" exact component={Home} />
-                <Redirect to="/home" />
-            </Switch>
-        );
+    if(user) { 
+        if (user.role == RoleConstant.MEMBER) {
+            routes = (
+                <Switch>
+                    <Route path="/preference" exact component={Preference} />
+                    <Route path="/home" exact component={Home} />
+                    <Redirect to="/home" />
+                </Switch>
+            );
+        }else if(user.role == RoleConstant.ADMIN) { 
+            routes = (
+                <Switch>
+                    <Route path="/myVenue" exact component={MyVenue} />
+                    <Route path="/homeAdmin" exact component={HomeAdmin} />
+                    <Redirect to="/homeAdmin" />
+                </Switch>
+            );
+        }
     }
 
     return <div>{routes}</div>;
