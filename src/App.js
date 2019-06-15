@@ -10,7 +10,7 @@ import Preference from "./containers/Preference/Preference";
 import LandingPageAdmin from "./containers/LandingPageAdmin/LandingPageAdmin";
 import Welcome from "./containers/Welcome/Welcome";
 import Logout from "./components/Logout/Logout";
-
+import Venue from "./containers/Venue/Venue";
 import * as actions from "./store/actions/index";
 
 function App({ user, onGetUser }) {
@@ -35,8 +35,9 @@ function App({ user, onGetUser }) {
     if (user) {
         if (user.role == RoleConstant.MEMBER) {
             routes = (
-                <Switch>
+                <Switch>                    
                     <Route path="/preference" exact component={Preference} />
+                    <Route path="/venue" exact component={Venue} />
                     <Route path="/home" exact component={Home} />
                     <Route path="/logout" exact component={Logout} />
                     <Redirect to="/home" />

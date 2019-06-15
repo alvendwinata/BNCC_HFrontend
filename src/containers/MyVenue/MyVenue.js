@@ -24,7 +24,13 @@ const steps = [
 function MyVenue({ current }) {
     return (
         <StepsCon current={current} steps={steps}>
-            {current === 0 ? <VenueInformation /> : current === 1 ? <AreaVenue /> : <SchedulePrices />}
+            {current === 0 ? (
+                <VenueInformation />
+            ) : current === 1 ? (
+                <AreaVenue />
+            ) : (
+                <SchedulePrices />
+            )}
         </StepsCon>
     );
 }
