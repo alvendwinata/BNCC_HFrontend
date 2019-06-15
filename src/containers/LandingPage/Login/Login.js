@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Icon, Input, Button } from "antd";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 import * as actions from "../../../store/actions/index";
+import { modal } from "../../../helpers/utility";
 
-function Login({ form, error, onLogin }) {
+function Login({ form, auth, history, onLogin, onOkError }) {
     const { getFieldDecorator, getFieldValue } = form;
+
+    useEffect(() => {
+        if (auth.user) {
+            modal("success", "Login Success", "Please Click Ok", () => {
+                history.replace("/home");
+            });
+        } else if (auth.error) {
+            modal("error", "Error", auth.error, () => {
+                onOkError();
+            });
+        }
+    }, [auth, history, onOkError]);
 
     const sumbitHandler = e => {
         e.preventDefault();
-        onLogin(getFieldValue('email'), getFieldValue('password'));
+        onLogin(getFieldValue("email"), getFieldValue("password"));
     };
 
     return (
@@ -88,14 +101,18 @@ function Login({ form, error, onLogin }) {
 
 const mapStateToProps = state => {
     return {
-        error: state.authReducer.error
+        auth: state.authReducer
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onLogin: (email, password) => dispatch(actions.login(email, password))
+        onLogin: (email, password) => dispatch(actions.login(email, password)),
+        onOkError: () => dispatch(actions.authOkError())
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Login));
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withRouter(Form.create()(Login)));

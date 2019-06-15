@@ -10,13 +10,26 @@ const reducer = (state = initialState, action) => {
         case actionTypes.LOGIN_SUCCESS:
             return {
                 ...state,
-                user: action.user
+                user: action.user,
+                error: null
             };
         case actionTypes.LOGIN_FAIL:
             return {
                 ...state,
-                error: action.error
-            }
+                error: action.error,
+                user: null
+            };
+        case actionTypes.AUTH_OK_ERROR:
+            return {
+                ...state,
+                error: null
+            };
+        case actionTypes.REGISTER_SUCCESS:
+            return {
+                ...state,
+                user: action.user,
+                error: null
+            };
         default:
             return state;
     }

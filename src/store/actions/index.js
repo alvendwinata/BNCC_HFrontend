@@ -1,5 +1,8 @@
 export {
     login,
     loginSuccess,
-    loginFail
-} from './auth';
+    loginFail,
+    authOkError,
+    register,
+    registerSuccess
+} from "./auth";

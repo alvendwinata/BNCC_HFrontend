@@ -19,7 +19,7 @@ function LayoutPage(WrappedComponenta, pageName) {
                         <WrappedComponenta {...props} />
                     </Content>
                     <Footer style={{ textAlign: "center" }}>
-                        My ~ Spotify
+                        Sports Center ~ 2019
                     </Footer>
                 </Layout>
             </Layout>
