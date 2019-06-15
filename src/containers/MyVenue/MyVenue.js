@@ -27,7 +27,7 @@ function MyVenue() {
     return (
         <StepsCon current={current} steps={steps}>
             {/* {current === 0 ? <VenueInformation /> : current === 1 ? <AreaVenue /> : null} */}
-            <SchedulePrices />
+            <AreaVenue />
         </StepsCon>
     );
 }
