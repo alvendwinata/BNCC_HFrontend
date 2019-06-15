@@ -5,7 +5,8 @@ import { connect } from "react-redux";
 import LandingPage from "./containers/LandingPage/LandingPage";
 import Home from "./containers/Home/Home";
 import Preference from "./containers/Preference/Preference";
-
+import LandingPageAdmin from "./containers/LandingPageAdmin/LandingPageAdmin";
+import Welcome from './containers/Welcome/Welcome';
 import { isEmpty } from "./helpers/utility";
 import * as actions from "./store/actions/index";
 
@@ -16,7 +17,9 @@ function App({ onGetUser }) {
 
     let routes = (
         <Switch>
-            <Route path="/" exact component={LandingPage} />
+            <Route path="/user" exact component={LandingPage} />
+            <Route path="/admin" exact component={LandingPageAdmin} />
+            <Route path="/" exact component={Welcome} />
             <Redirect to="/" />
         </Switch>
     );

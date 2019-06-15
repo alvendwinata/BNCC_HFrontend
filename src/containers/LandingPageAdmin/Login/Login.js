@@ -1,34 +1,21 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Form, Icon, Input, Button } from "antd";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import * as actions from "../../../store/actions/index";
-import { modal } from "../../../helpers/utility";
 
-function Login({ form, auth, history, onLogin, onOkError }) {
+function Login({ form, error, onLogin }) {
     const { getFieldDecorator, getFieldValue } = form;
-
-    useEffect(() => {
-        if (auth.user) {
-            modal("success", "Login Success", "Please Click Ok", () => {
-                history.replace("/home");
-            });
-        } else if (auth.error) {
-            modal("error", "Error", auth.error, () => {
-                onOkError();
-            });
-        }
-    }, [auth.user, auth.error, history, onOkError]);
 
     const sumbitHandler = e => {
         e.preventDefault();
-        onLogin(getFieldValue("email"), getFieldValue("password"));
+        onLogin(getFieldValue('email'), getFieldValue('password'));
     };
 
     return (
         <>
-            <h1>Login Member</h1>
+            <h1>Login Admin</h1>
             <Form onSubmit={sumbitHandler}>
                 <Form.Item>
                     {getFieldDecorator("email", {
@@ -85,7 +72,7 @@ function Login({ form, auth, history, onLogin, onOkError }) {
                     Or{" "}
                     <Link
                         to={{
-                            pathname: "/user",
+                            pathname: "/",
                             state: {
                                 register: true
                             }
@@ -101,18 +88,14 @@ function Login({ form, auth, history, onLogin, onOkError }) {
 
 const mapStateToProps = state => {
     return {
-        auth: state.authReducer
+        error: state.authReducer.error
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onLogin: (email, password) => dispatch(actions.login(email, password)),
-        onOkError: () => dispatch(actions.authOkError())
+        onLogin: (email, password) => dispatch(actions.login(email, password))
     };
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(Form.create()(Login)));
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Login));

@@ -1,30 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Form, Input, Button, PageHeader } from "antd";
 import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
 
-import { modal } from "../../../helpers/utility";
-import * as actions from "../../../store/actions/index";
-
-function Register({ form, history, auth, onRegister }) {
-    const { getFieldDecorator, getFieldValue } = form;
-
-    useEffect(() => {
-        if (auth.user) {
-            modal("success", "Register Success", "Please Click Ok", () => {
-                history.replace("/home");
-            });
-        }
-    }, [auth.user, history]);
+function Register({ form, history }) {
+    const { getFieldDecorator } = form;
 
     const sumbitHandler = e => {
         e.preventDefault();
-        onRegister(
-            getFieldValue("email"),
-            getFieldValue("password"),
-            getFieldValue("name"),
-            getFieldValue("phone")
-        );
     };
 
     const validateConfirmPass = (rule, value, callback) => {
@@ -62,8 +44,8 @@ function Register({ form, history, auth, onRegister }) {
     return (
         <>
             <PageHeader
-                onBack={() => history.replace("/user")}
-                title="Register Member"
+                onBack={() => history.replace("/")}
+                title="Register Admin"
                 style={{ padding: "20px 0" }}
             />
             <Form {...formItemLayout} onSubmit={sumbitHandler}>
@@ -135,20 +117,4 @@ function Register({ form, history, auth, onRegister }) {
     );
 }
 
-const mapStateToProps = state => {
-    return {
-        auth: state.authReducer
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onRegister: (email, password, name, phone) =>
-            dispatch(actions.register(email, password, name, phone))
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(Form.create()(Register)));
+export default withRouter(Form.create()(Register));
