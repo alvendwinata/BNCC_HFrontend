@@ -66,6 +66,11 @@ const venueConst = {
 }
 
 function Venue({user}) { 
+
+    const keyJoin = []
+    venueConst.areas.map(data => { 
+        keyJoin.push(data.areaID.toString())
+    })
     return (
         <>
             <div className={styles.venue_pic}>
@@ -108,7 +113,7 @@ function Venue({user}) {
                  <div className={styles.box_title}>Area</div>
                  <Collapse defaultActiveKey={keyJoin}>
                     {
-                        areaData.map(data => (
+                        venueConst.areas.map(data => (
                             <Panel key={data.areaID} header={data.areaName}>
                                 <p>{data.areaDesc}</p>
                                 <List
