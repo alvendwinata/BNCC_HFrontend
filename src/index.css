@@ -12,5 +12,9 @@ body {
 }
 
 .ant-collapse-content {
-  background-color: rgba(0,0,0,0) !important;
+  background-color: rgb(255,255,255) !important;
+}
+
+.ant-layout { 
+  background-color : transparent;
 }
