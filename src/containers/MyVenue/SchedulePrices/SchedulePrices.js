@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Select, Button, List, Collapse, TimePicker, Input } from "antd";
 import { connect } from "react-redux";
 import styles from './SchedulePrices.module.css';
-import axios from "../../../axios";
 import * as actions from "../../../store/actions/index";
 import moment from "moment";
 import { withRouter } from "react-router-dom";
 
 const Panel = Collapse.Panel;
 const {Option} = Select;
-const format = 'HH:mm';
 const area = [
     {
         "areaID" : 1,
@@ -43,13 +41,13 @@ const area = [
 function SchedulePrices({ user, history, onSubmit }) {
     
     const [day, setDay] = useState("");
-    const [areaData, setAreaData] = useState(area);
+    const [areaData] = useState(area);
     const [startTime, setStartTime] = useState("09:00");
     const [endTime, setEndTime] = useState("12:00");
 
     const keyJoin = []
     areaData.map(data => {
-        keyJoin.push(data.areaID.toString())
+        return keyJoin.push(data.areaID.toString())
     })
 
     const changeDayHandler = value => {

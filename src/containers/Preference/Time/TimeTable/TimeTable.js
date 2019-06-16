@@ -5,8 +5,6 @@ import { connect } from "react-redux";
 import * as actions from "../../../../store/actions/index";
 
 function TimeTable({ data, onSubmit }) {
-    let table = null;
-
     const returnDayName = id => {
         if (id === 1) {
             return "Monday";
@@ -45,7 +43,7 @@ function TimeTable({ data, onSubmit }) {
 
     if (data != null && data.length > 0) {
         data.map((item, index) => {
-            data[index].dayID = returnDayName(item.dayId)
+            return data[index].dayID = returnDayName(item.dayId)
         })
     }
 

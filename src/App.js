@@ -33,7 +33,7 @@ function App({ user, onGetUser }) {
     );
 
     if (user) {
-        if (user.role == RoleConstant.MEMBER) {
+        if (user.role === RoleConstant.MEMBER) {
             routes = (
                 <Switch>                    
                     <Route path="/preference" exact component={Preference} />
@@ -43,7 +43,7 @@ function App({ user, onGetUser }) {
                     <Redirect to="/home" />
                 </Switch>
             );
-        } else if (user.role == RoleConstant.ADMIN) {
+        } else if (user.role === RoleConstant.ADMIN) {
             routes = (
                 <Switch>
                     <Route path="/myVenue" exact component={MyVenue} />

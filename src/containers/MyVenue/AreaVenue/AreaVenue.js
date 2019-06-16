@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Select, Upload, Button, Input, Icon, List } from "antd";
+import React, { useState } from "react";
+import { Upload, Button, Input, Icon, List } from "antd";
 import { connect } from "react-redux";
 import styles from './AreaVenue.module.css';
-import axios from "../../../axios";
 import * as actions from "../../../store/actions/index";
 
 const { TextArea } = Input;
-const format = 'HH:mm';
-const { Option } = Select;
 
 const props = {
     name: 'file',

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React from "react";
 import styles from "./Venue.module.css";
 import LayoutPage from "../../hoc/LayoutPage/LayoutPage";
 
@@ -32,19 +31,10 @@ function Venue({user}) {
     return (
         <>
             <div className={styles.venue_pic}>
-                <img src={venueConst.pic} />
+                <img src={venueConst.pic} alt="venue-pic" />
             </div>
         </>
     );
 }
-
-
-const mapStateToProps = state => {
-    return {};
-};
-
-const mapDispatchToProps = dispatch => {
-    return {};
-};
 
 export default LayoutPage(Venue, PAGE_NAME);
