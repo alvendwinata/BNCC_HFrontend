@@ -2,6 +2,7 @@ import React from 'react';
 import Particles from "../../components/UI/Particles/Particles";
 import styles from "../Welcome/Welcome.module.css";
 import { Button } from 'antd';
+import logo from "../../assets/images/logo.png";
 import BoxContainer from '../../components/Elements/BoxContainer/BoxContainer';
 import {withRouter} from 'react-router'
 function Welcome({history}) { 
@@ -18,6 +19,11 @@ function Welcome({history}) {
         <>
             <Particles type="bubble" />
             <div className={styles.center_container}>
+                <img
+                    src={logo}
+                    className={styles.logoSideDrawer}
+                    alt="Logo"
+                />
                 <div className={styles.title}>Sports Center</div>
                 <div className={styles.description}>Find venues to do sports and get yourself healthy.</div>
                 <Button ghost size={"large"} onClick={redirectToLandingPage}>GET STARTED</Button>   

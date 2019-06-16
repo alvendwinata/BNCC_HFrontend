@@ -18,3 +18,8 @@ body {
 .ant-layout { 
   background-color : transparent;
 }
+
+.ant-card-body { 
+  height: 250px !important;
+  overflow: hidden;
+}
