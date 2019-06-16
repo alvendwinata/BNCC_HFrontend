@@ -118,7 +118,7 @@ function SchedulePrices({ user, history, onSubmit }) {
             </Collapse>
 
             <div className={styles.form_item}>
-                <Button type="primary" onClick={submitHandler}>Add Area</Button>
+                <Button type="primary" onClick={submitHandler}>Add Information</Button>
             </div>
         </>
     );

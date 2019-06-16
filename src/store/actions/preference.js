@@ -13,5 +13,12 @@ export const updatePrefLocation = (city, address, lat, long) => {
         address: address,
         lat: lat,
         long: long
-    }
-}
+    };
+};
+
+export const setVenueID = venueId => {
+    return {
+        type: actionTypes.SET_VENUEID,
+        venueId: venueId
+    };
+};

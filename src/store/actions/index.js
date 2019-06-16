@@ -12,5 +12,6 @@ export {
 
 export {
     updateCurrPref,
-    updatePrefLocation
+    updatePrefLocation,
+    setVenueID
 } from "./preference";

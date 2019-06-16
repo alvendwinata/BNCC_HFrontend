@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React from "react";
 import { List, Collapse } from "antd";
 import styles from "./Venue.module.css";
 import LayoutPage from "../../hoc/LayoutPage/LayoutPage";
@@ -69,7 +68,7 @@ function Venue({user}) {
 
     const keyJoin = []
     venueConst.areas.map(data => { 
-        keyJoin.push(data.areaID.toString())
+        return keyJoin.push(data.areaID.toString())
     })
     return (
         <>

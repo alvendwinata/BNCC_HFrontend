@@ -8,6 +8,7 @@ export const GET_USER = "GET_USER";
 
 export const UPDATE_CURR_PREF = "UPDATE_CURR_PREF";
 export const UPDATE_PREF_LOCATION = "UPDATE_PREF_LOCATION";
+export const SET_VENUEID = "SET_VENUEID";
 
 export const LOGOUT = "LOGOUT";
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';

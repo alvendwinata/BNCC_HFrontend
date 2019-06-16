@@ -19,7 +19,7 @@ const props = {
     }
 };
 
-function VenueInformation({ user, loc, onSubmit, google }) {
+function VenueInformation({ user, loc, onSubmit, onDone, google }) {
     const [data, setData] = useState([]);
     const [fetching, setFetching] = useState(false);
     const [value, setValue] = useState([]);
@@ -27,7 +27,6 @@ function VenueInformation({ user, loc, onSubmit, google }) {
     const [facilities, setFacility] = useState([]);
     const [vName, setVName] = useState("");
     const [vDes, setVDes] = useState("");
-    const [vPic, setVPic] = useState(null);
 
     const fetchSports = value => {
         setFetching(true);
@@ -100,6 +99,7 @@ function VenueInformation({ user, loc, onSubmit, google }) {
                 });
 
                 onSubmit();
+                onDone(res.data.venue.id);
             }
         });
     };
@@ -114,10 +114,6 @@ function VenueInformation({ user, loc, onSubmit, google }) {
         setFacilityValue(value);
         setFacility([]);
         setFetching(false);
-    };
-
-    const setVenuePic = value => {
-        setVPic(value.file.name);
     };
 
     return (
@@ -151,7 +147,7 @@ function VenueInformation({ user, loc, onSubmit, google }) {
             </div>
             <div className={styles.form_item}>
                 <div className={styles.form_label}>Venue Picture</div>
-                <Upload {...props} onChange={setVenuePic}>
+                <Upload {...props}>
                     <Button>
                         <Icon type="upload" /> Click to Upload
                     </Button>
@@ -332,7 +328,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSubmit: () => dispatch(actions.updateCurrPref())
+        onSubmit: () => dispatch(actions.updateCurrPref()),
+        onDone: (venueId) => dispatch(actions.setVenueID(venueId))
     };
 };
 

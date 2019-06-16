@@ -2,7 +2,8 @@ import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
     current: 0,
-    location: null
+    location: null,
+    venueId: null
 };
 
 const currentMax = 2;
@@ -24,6 +25,12 @@ const reducer = (state = initialState, action) => {
                     long: action.long
                 }
             };
+        case actionTypes.SET_VENUEID:
+            return {
+                ...state,
+                location: null,
+                venueId: action.venueId
+            }
         default:
             return state;
     }
