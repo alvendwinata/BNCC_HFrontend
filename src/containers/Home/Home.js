@@ -44,8 +44,8 @@ function Home({ user, history }) {
         });
     };
 
-    const listItemClickHandler = () => {
-        history.replace("venue");
+    const listItemClickHandler = id => {
+        history.replace("venue/" + id);
     };
 
     useEffect(() => {
@@ -99,7 +99,7 @@ function Home({ user, history }) {
                     renderItem={item => (
                         <List.Item
                             className={styles.list_item}
-                            onClick={listItemClickHandler}
+                            onClick={() => listItemClickHandler(item.id)}
                         >
                             <div className={styles.list_item_pic}>
                                 <img src={item.photos} alt={item.name} />

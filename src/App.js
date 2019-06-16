@@ -37,7 +37,7 @@ function App({ user, onGetUser }) {
             routes = (
                 <Switch>                    
                     <Route path="/preference" exact component={Preference} />
-                    <Route path="/venue" exact component={Venue} />
+                    <Route path="/venue/:id" exact component={Venue} />
                     <Route path="/home" exact component={Home} />
                     <Route path="/logout" exact component={Logout} />
                     <Redirect to="/home" />

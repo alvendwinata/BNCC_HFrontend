@@ -51,7 +51,7 @@ function HomeAdmin({ user, history }) {
                     <br />
                 </>
             ) : null}
-            <BoxContainer icon="reconciliation" mode="light">
+            <BoxContainer icon="pushpin" mode="light">
                 <h1>Promote My Venue</h1>
                 <h4 style={{ color: "red" }}>*additional charge may apply</h4>
                 <Button type="primary" onClick={promoteNow}>
