@@ -20,6 +20,6 @@ body {
 }
 
 .ant-card-body { 
-  height: 250px !important;
+  height: 300px !important;
   overflow: hidden;
 }
